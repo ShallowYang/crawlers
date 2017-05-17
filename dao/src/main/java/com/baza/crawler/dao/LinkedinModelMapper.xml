@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baza.crawler.dao.LinkedinModelMapper" >
+  <resultMap id="BaseResultMap" type="com.baza.crawler.domain.LinkedinModel" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="first_name" property="firstName" jdbcType="VARCHAR" />
+    <result column="last_name" property="lastName" jdbcType="VARCHAR" />
+    <result column="industry_name" property="industryName" jdbcType="VARCHAR" />
+    <result column="headline" property="headline" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="educations" property="educations" jdbcType="VARCHAR" />
+    <result column="unique_url" property="uniqueUrl" jdbcType="VARCHAR" />
+    <result column="insert_time" property="insertTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.baza.crawler.domain.LinkedinModel" extends="BaseResultMap" >
+    <result column="experiences" property="experiences" jdbcType="LONGVARCHAR" />
+    <result column="skills" property="skills" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, first_name, last_name, industry_name, headline, address, educations, unique_url, 
+    insert_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    experiences, skills
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.baza.crawler.domain.LinkedinModelExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from linkedin_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.baza.crawler.domain.LinkedinModelExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from linkedin_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from linkedin_data
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from linkedin_data
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.baza.crawler.domain.LinkedinModelExample" >
+    delete from linkedin_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.baza.crawler.domain.LinkedinModel" useGeneratedKeys="true" keyProperty="id" >
+    insert into linkedin_data (first_name, last_name, industry_name, 
+      headline, address, educations, 
+      unique_url, insert_time, experiences, 
+      skills)
+    values (#{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR}, #{industryName,jdbcType=VARCHAR}, 
+      #{headline,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{educations,jdbcType=VARCHAR}, 
+      #{uniqueUrl,jdbcType=VARCHAR}, #{insertTime,jdbcType=TIMESTAMP}, #{experiences,jdbcType=LONGVARCHAR}, 
+      #{skills,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.baza.crawler.domain.LinkedinModel" useGeneratedKeys="true" keyProperty="id" >
+    insert into linkedin_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="firstName != null" >
+        first_name,
+      </if>
+      <if test="lastName != null" >
+        last_name,
+      </if>
+      <if test="industryName != null" >
+        industry_name,
+      </if>
+      <if test="headline != null" >
+        headline,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="educations != null" >
+        educations,
+      </if>
+      <if test="uniqueUrl != null" >
+        unique_url,
+      </if>
+      <if test="insertTime != null" >
+        insert_time,
+      </if>
+      <if test="experiences != null" >
+        experiences,
+      </if>
+      <if test="skills != null" >
+        skills,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="firstName != null" >
+        #{firstName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastName != null" >
+        #{lastName,jdbcType=VARCHAR},
+      </if>
+      <if test="industryName != null" >
+        #{industryName,jdbcType=VARCHAR},
+      </if>
+      <if test="headline != null" >
+        #{headline,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="educations != null" >
+        #{educations,jdbcType=VARCHAR},
+      </if>
+      <if test="uniqueUrl != null" >
+        #{uniqueUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="insertTime != null" >
+        #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="experiences != null" >
+        #{experiences,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="skills != null" >
+        #{skills,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.baza.crawler.domain.LinkedinModelExample" resultType="java.lang.Integer" >
+    select count(*) from linkedin_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update linkedin_data
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.firstName != null" >
+        first_name = #{record.firstName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastName != null" >
+        last_name = #{record.lastName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.industryName != null" >
+        industry_name = #{record.industryName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.headline != null" >
+        headline = #{record.headline,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.educations != null" >
+        educations = #{record.educations,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uniqueUrl != null" >
+        unique_url = #{record.uniqueUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insertTime != null" >
+        insert_time = #{record.insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.experiences != null" >
+        experiences = #{record.experiences,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.skills != null" >
+        skills = #{record.skills,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update linkedin_data
+    set id = #{record.id,jdbcType=INTEGER},
+      first_name = #{record.firstName,jdbcType=VARCHAR},
+      last_name = #{record.lastName,jdbcType=VARCHAR},
+      industry_name = #{record.industryName,jdbcType=VARCHAR},
+      headline = #{record.headline,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      educations = #{record.educations,jdbcType=VARCHAR},
+      unique_url = #{record.uniqueUrl,jdbcType=VARCHAR},
+      insert_time = #{record.insertTime,jdbcType=TIMESTAMP},
+      experiences = #{record.experiences,jdbcType=LONGVARCHAR},
+      skills = #{record.skills,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update linkedin_data
+    set id = #{record.id,jdbcType=INTEGER},
+      first_name = #{record.firstName,jdbcType=VARCHAR},
+      last_name = #{record.lastName,jdbcType=VARCHAR},
+      industry_name = #{record.industryName,jdbcType=VARCHAR},
+      headline = #{record.headline,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      educations = #{record.educations,jdbcType=VARCHAR},
+      unique_url = #{record.uniqueUrl,jdbcType=VARCHAR},
+      insert_time = #{record.insertTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baza.crawler.domain.LinkedinModel" >
+    update linkedin_data
+    <set >
+      <if test="firstName != null" >
+        first_name = #{firstName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastName != null" >
+        last_name = #{lastName,jdbcType=VARCHAR},
+      </if>
+      <if test="industryName != null" >
+        industry_name = #{industryName,jdbcType=VARCHAR},
+      </if>
+      <if test="headline != null" >
+        headline = #{headline,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="educations != null" >
+        educations = #{educations,jdbcType=VARCHAR},
+      </if>
+      <if test="uniqueUrl != null" >
+        unique_url = #{uniqueUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="insertTime != null" >
+        insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="experiences != null" >
+        experiences = #{experiences,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="skills != null" >
+        skills = #{skills,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.baza.crawler.domain.LinkedinModel" >
+    update linkedin_data
+    set first_name = #{firstName,jdbcType=VARCHAR},
+      last_name = #{lastName,jdbcType=VARCHAR},
+      industry_name = #{industryName,jdbcType=VARCHAR},
+      headline = #{headline,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      educations = #{educations,jdbcType=VARCHAR},
+      unique_url = #{uniqueUrl,jdbcType=VARCHAR},
+      insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      experiences = #{experiences,jdbcType=LONGVARCHAR},
+      skills = #{skills,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baza.crawler.domain.LinkedinModel" >
+    update linkedin_data
+    set first_name = #{firstName,jdbcType=VARCHAR},
+      last_name = #{lastName,jdbcType=VARCHAR},
+      industry_name = #{industryName,jdbcType=VARCHAR},
+      headline = #{headline,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      educations = #{educations,jdbcType=VARCHAR},
+      unique_url = #{uniqueUrl,jdbcType=VARCHAR},
+      insert_time = #{insertTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

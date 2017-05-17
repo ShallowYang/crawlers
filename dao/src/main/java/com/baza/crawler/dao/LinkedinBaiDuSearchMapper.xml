@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baza.crawler.dao.LinkedinBaiDuSearchMapper" >
+  <resultMap id="BaseResultMap" type="com.baza.crawler.domain.LinkedinBaiDuSearch" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="search" property="search" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="summary" property="summary" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="crawled" property="crawled" jdbcType="VARCHAR" />
+    <result column="insert_time" property="insertTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, search, name, summary, url, crawled, insert_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.baza.crawler.domain.LinkedinBaiDuSearchExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from linkedin_baidu_search_url
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      crawler.order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from linkedin_baidu_search_url
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from linkedin_baidu_search_url
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.baza.crawler.domain.LinkedinBaiDuSearchExample" >
+    delete from linkedin_baidu_search_url
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.baza.crawler.domain.LinkedinBaiDuSearch" useGeneratedKeys="true" keyProperty="id" >
+    insert into linkedin_baidu_search_url (search, name, summary, 
+      url, crawled, insert_time
+      )
+    values (#{search,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{crawled,jdbcType=VARCHAR}, #{insertTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.baza.crawler.domain.LinkedinBaiDuSearch" useGeneratedKeys="true" keyProperty="id" >
+    insert into linkedin_baidu_search_url
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="search != null" >
+        search,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="summary != null" >
+        summary,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="crawled != null" >
+        crawled,
+      </if>
+      <if test="insertTime != null" >
+        insert_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="search != null" >
+        #{search,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null" >
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="crawled != null" >
+        #{crawled,jdbcType=VARCHAR},
+      </if>
+      <if test="insertTime != null" >
+        #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.baza.crawler.domain.LinkedinBaiDuSearchExample" resultType="java.lang.Integer" >
+    select count(*) from linkedin_baidu_search_url
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <select id="selectByNoCrawler" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from linkedin_baidu_search_url where crawled = "NO"
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map" >
+    update linkedin_baidu_search_url
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.search != null" >
+        search = #{record.search,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.summary != null" >
+        summary = #{record.summary,jdbcType=VARCHAR},
+      </if>
+      <if test="record.url != null" >
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crawled != null" >
+        crawled = #{record.crawled,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insertTime != null" >
+        insert_time = #{record.insertTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update linkedin_baidu_search_url
+    set id = #{record.id,jdbcType=INTEGER},
+      search = #{record.search,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      summary = #{record.summary,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      crawled = #{record.crawled,jdbcType=VARCHAR},
+      insert_time = #{record.insertTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baza.crawler.domain.LinkedinBaiDuSearch" >
+    update linkedin_baidu_search_url
+    <set >
+      <if test="search != null" >
+        search = #{search,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null" >
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="crawled != null" >
+        crawled = #{crawled,jdbcType=VARCHAR},
+      </if>
+      <if test="insertTime != null" >
+        insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baza.crawler.domain.LinkedinBaiDuSearch" >
+    update linkedin_baidu_search_url
+    set search = #{search,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      crawled = #{crawled,jdbcType=VARCHAR},
+      insert_time = #{insertTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
